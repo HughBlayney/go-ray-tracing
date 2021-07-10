@@ -21,5 +21,19 @@ func (v *Vector) Normalise() {
 		v.Z = v.Z / m
 	}
 }
-	}
+
+func (v *Vector) Add(u *Vector) *Vector {
+	return &Vector{X: v.X + u.X, Y: v.Y + u.Y, Z: v.Z + u.Z}
+}
+
+func (v *Vector) Subtract(u *Vector) *Vector {
+	return &Vector{X: v.X - u.X, Y: v.Y - u.Y, Z: v.Z - u.Z}
+}
+
+func (v *Vector) MultiplyScalar(scalar float64) *Vector {
+	return &Vector{X: v.X * scalar, Y: v.Y * scalar, Z: v.Z * scalar}
+}
+
+func (v *Vector) Dot(u *Vector) float64 {
+	return v.X*u.X + v.Y*u.Y + v.Z*u.Z
 }
