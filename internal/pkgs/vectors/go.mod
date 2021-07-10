@@ -1,3 +1,3 @@
-module vectors
+module rays
 
 go 1.16
