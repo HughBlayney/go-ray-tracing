@@ -3,21 +3,23 @@ package vectors
 import "math"
 
 type Vector struct {
-	x float64
-	y float64
-	z float64
+	X float64
+	Y float64
+	Z float64
 }
 
 func (v *Vector) Magnitude() (magnitude float64) {
-	magnitude = math.Sqrt(v.x*v.x + v.y*v.y + v.z*v.z)
+	magnitude = math.Sqrt(v.X*v.X + v.Y*v.Y + v.Z*v.Z)
 	return
 }
 
 func (v *Vector) Normalise() {
 	m := v.Magnitude()
 	if m != 0.0 {
-		v.x = v.x / m
-		v.y = v.y / m
-		v.z = v.z / m
+		v.X = v.X / m
+		v.Y = v.Y / m
+		v.Z = v.Z / m
+	}
+}
 	}
 }
