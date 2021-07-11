@@ -45,3 +45,8 @@ func (v *Vector) Dot(u *Vector) float64 {
 func (v *Vector) CloseTo(u *Vector) bool {
 	return utils.Close_enough(v.X, u.X) && utils.Close_enough(v.Y, u.Y) && utils.Close_enough(v.Z, u.Z)
 }
+
+func (v *Vector) Reflect(surface_normal *Vector) (reflected_vector *Vector) {
+	reflected_vector = v.Subtract(surface_normal.MultiplyScalar(2 * v.Dot(surface_normal)))
+	return
+}
