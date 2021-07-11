@@ -9,8 +9,9 @@ import (
 )
 
 type Scene struct {
-	Objects []objects.Object
-	Lights  []lights.Light
+	Objects       []objects.Object
+	Lights        []lights.Light
+	AmbientColour color.Color
 }
 
 func (s Scene) Render(ray_matrix [][]rays.Ray) (colour_matrix [][]color.RGBA) {
