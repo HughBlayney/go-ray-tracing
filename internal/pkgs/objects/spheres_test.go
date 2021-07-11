@@ -30,6 +30,22 @@ func TestSphere_CollideDistances(t *testing.T) {
 				Direction: &vectors.Vector{X: 0.0, Y: 1.0, Z: 0.0}}},
 			want: []float64{9.0, 11.0},
 		},
+		{
+			name:   "Edge of sphere, 1 collision",
+			fields: fields{Radius: 1.0, Center: vectors.Vector{X: 0.0, Y: 10.0, Z: 10.0}},
+			args: args{test_ray: rays.Ray{
+				Origin:    &vectors.Vector{X: 0.0, Y: 0.0, Z: 11.0},
+				Direction: &vectors.Vector{X: 0.0, Y: 1.0, Z: 0.0}}},
+			want: []float64{10.0},
+		},
+		{
+			name:   "Miss sphere, 0 collisions",
+			fields: fields{Radius: 1.0, Center: vectors.Vector{X: 0.0, Y: 10.0, Z: 10.0}},
+			args: args{test_ray: rays.Ray{
+				Origin:    &vectors.Vector{X: 0.0, Y: 0.0, Z: 12.0},
+				Direction: &vectors.Vector{X: 0.0, Y: 1.0, Z: 0.0}}},
+			want: []float64{},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
