@@ -1,6 +1,10 @@
 package vectors
 
-import "math"
+import (
+	"math"
+
+	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/utils"
+)
 
 type Vector struct {
 	X float64
@@ -36,4 +40,8 @@ func (v *Vector) MultiplyScalar(scalar float64) *Vector {
 
 func (v *Vector) Dot(u *Vector) float64 {
 	return v.X*u.X + v.Y*u.Y + v.Z*u.Z
+}
+
+func (v *Vector) CloseTo(u *Vector) bool {
+	return utils.Close_enough(v.X, u.X) && utils.Close_enough(v.Y, u.Y) && utils.Close_enough(v.Z, u.Z)
 }
