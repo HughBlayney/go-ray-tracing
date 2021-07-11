@@ -13,20 +13,22 @@ type Sphere struct {
 }
 
 func (s Sphere) CollideDistances(test_ray rays.Ray) []float64 {
-	d := test_ray.Direction.Magnitude()
-	oc := test_ray.Origin.Subtract(s.Center).Magnitude()
+	// Always returns distances in ascending order
+	B := test_ray.Direction
+	AC := test_ray.Origin.Subtract(&s.Center)
 
-	a := d * d
-	b := 2 * d * oc
-	c := oc * oc
+	a := B.Dot(B)
+	b := 2 * B.Dot(AC)
+	c := AC.Dot(AC) - s.Radius*s.Radius
 
 	delta := b*b - 4*a*c
 
 	var distances []float64
 
 	if delta > 0.0 {
-		distances = append(distances, (-b+math.Sqrt(delta))/(2*a))
+		// This guarantees in ascending order
 		distances = append(distances, (-b-math.Sqrt(delta))/(2*a))
+		distances = append(distances, (-b+math.Sqrt(delta))/(2*a))
 	} else if delta == 0.0 {
 		distances = append(distances, (-b)/(2*a))
 	}
