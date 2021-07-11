@@ -6,6 +6,21 @@ import (
 	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/vectors"
 )
 
+func FireRays(screen_vectors [][]*vectors.Vector, origin *vectors.Vector) [][]Ray {
+	var screen_rays [][]Ray
+	for _, row := range screen_vectors {
+		var screen_row []Ray
+		for _, screen_vector := range row {
+			screen_row = append(screen_row, MakeRay(
+				origin, screen_vector.Subtract(origin),
+			))
+		}
+		screen_rays = append(screen_rays, screen_row)
+	}
+
+	return screen_rays
+}
+
 type Ray struct {
 	Origin    *vectors.Vector
 	Direction *vectors.Vector
