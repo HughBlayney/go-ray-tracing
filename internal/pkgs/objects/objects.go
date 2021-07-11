@@ -14,6 +14,6 @@ type Object interface {
 // I don't think this is done correctly, but this is the best way I could think of.
 // I don't want to be duplicating code, and this function is common among all shapes.
 func ComputeReflectedRay(incoming_ray rays.Ray, point_of_intersection *vectors.Vector, surface_normal *vectors.Vector) rays.Ray {
-	new_direction := surface_normal.MultiplyScalar(2 * incoming_ray.Direction.Dot(surface_normal)).Subtract(incoming_ray.Direction.MultiplyScalar(-1))
+	new_direction := incoming_ray.Direction.Subtract(surface_normal.MultiplyScalar(2 * incoming_ray.Direction.Dot(surface_normal)))
 	return rays.Ray{Origin: point_of_intersection, Direction: new_direction}
 }
