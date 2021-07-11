@@ -1,14 +1,17 @@
 package objects
 
 import (
+	"image/color"
+
 	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/rays"
 	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/vectors"
 )
 
 type Object interface {
 	CollideDistances(rays.Ray) []float64 // Returns slice of distances to intersection of ray with object
-	Normal(vectors.Vector) vectors.Vector
-	Reflect(rays.Ray) rays.Ray
+	Normal(*vectors.Vector) *vectors.Vector
+	Reflect(rays.Ray, *vectors.Vector) rays.Ray
+	GetColor() color.RGBA
 }
 
 // I don't think this is done correctly, but this is the best way I could think of.
