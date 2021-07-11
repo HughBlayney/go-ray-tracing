@@ -45,8 +45,8 @@ func subdivide(start float64, end float64, num_segments int) []float64 {
 }
 
 func main() {
-	width := 200
-	height := 100
+	width := 2000
+	height := 1000
 
 	upLeft := image.Point{0, 0}
 	lowRight := image.Point{width, height}
@@ -54,7 +54,7 @@ func main() {
 	img := image.NewRGBA(image.Rectangle{upLeft, lowRight})
 
 	// As an initial test, we'll define the screen as a plane at 0, 0, 1
-	xs := subdivide(-1.0, 1.0, width)
+	xs := subdivide(-2.0, 2.0, width)
 	ys := subdivide(-1.0, 1.0, height)
 	z := 1.0
 	// We need to reverse the ys to go top-down
@@ -90,7 +90,7 @@ func main() {
 		}
 	}
 
-	f, err := os.Create("./images/outimage.png")
+	f, err := os.Create("./images/progress/1_test_collision.png")
 	if err != nil {
 		log.Fatal(err)
 	}
