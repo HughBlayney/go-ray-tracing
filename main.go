@@ -9,6 +9,7 @@ import (
 
 	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/objects"
 	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/rays"
+	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/scenes"
 	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/vectors"
 )
 
@@ -70,27 +71,35 @@ func main() {
 		}
 		screen_vectors = append(screen_vectors, screen_row)
 	}
+	// Colors are defined by Red, Green, Blue, Alpha uint8 values.
+	cyan := color.RGBA{100, 200, 200, 0xff}
+	red := color.RGBA{0xff, 0, 0, 0xff}
 	// And a sphere with radius 1 at 0, 0, 10
 	sphere := objects.Sphere{
 		Radius: 1.0,
 		Center: vectors.Vector{X: 0.0, Y: 0.0, Z: 10.0},
+		Color:  cyan,
+	}
+	sphere2 := objects.Sphere{
+		Radius: 1.0,
+		Center: vectors.Vector{X: 10.0, Y: 0.0, Z: 10.0},
+		Color:  red,
 	}
 
 	screen_rays := rays.FireRays(screen_vectors, &vectors.Vector{X: 0.0, Y: 0.0, Z: 0.0})
 
-	// Colors are defined by Red, Green, Blue, Alpha uint8 values.
-	cyan := color.RGBA{100, 200, 200, 0xff}
+	scene := scenes.Scene{Objects: []objects.Object{sphere, sphere2}}
+
+	colour_matrix := scene.Render(screen_rays)
 
 	// Set color for each pixel. Cyan if hits sphere, transparent otherwise.
-	for i, row := range screen_rays {
-		for j, ray := range row {
-			if len(sphere.CollideDistances(ray)) > 0 {
-				img.Set(j, i, cyan)
-			}
+	for i, row := range colour_matrix {
+		for j, color := range row {
+			img.Set(j, i, color)
 		}
 	}
 
-	f, err := os.Create("./images/progress/1_test_collision.png")
+	f, err := os.Create("./images/output.png")
 	if err != nil {
 		log.Fatal(err)
 	}
