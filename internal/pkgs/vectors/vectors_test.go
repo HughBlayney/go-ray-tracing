@@ -1,21 +1,16 @@
 package vectors
 
 import (
-	"math"
 	"testing"
+
+	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/utils"
 )
-
-const tolerance float64 = 0.0001
-
-func close_enough(x, y float64) bool {
-	return math.Abs(x-y) < tolerance
-}
 
 func TestVector_Magnitude(t *testing.T) {
 	type fields struct {
-		x float64
-		y float64
-		z float64
+		X float64
+		Y float64
+		Z float64
 	}
 	tests := []struct {
 		name   string
@@ -23,12 +18,12 @@ func TestVector_Magnitude(t *testing.T) {
 		want   float64
 	}{
 		{
-			name:   "Positive components (no z)",
+			name:   "Positive components (no Z)",
 			fields: fields{3.0, 4.0, 0.0},
 			want:   5.0,
 		},
 		{
-			name:   "Positive components (no x)",
+			name:   "Positive components (no X)",
 			fields: fields{0.0, 3.0, 4.0},
 			want:   5.0,
 		},
@@ -51,11 +46,11 @@ func TestVector_Magnitude(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			v := &Vector{
-				x: tt.fields.x,
-				y: tt.fields.y,
-				z: tt.fields.z,
+				X: tt.fields.X,
+				Y: tt.fields.Y,
+				Z: tt.fields.Z,
 			}
-			if got := v.Magnitude(); !(close_enough(got, tt.want)) {
+			if got := v.Magnitude(); !(utils.Close_enough(got, tt.want)) {
 				t.Errorf("Vector.Magnitude() = %v, want %v", got, tt.want)
 			}
 		})
@@ -64,9 +59,9 @@ func TestVector_Magnitude(t *testing.T) {
 
 func TestVector_Normalise(t *testing.T) {
 	type fields struct {
-		x float64
-		y float64
-		z float64
+		X float64
+		Y float64
+		Z float64
 	}
 	tests := []struct {
 		name   string
@@ -74,12 +69,12 @@ func TestVector_Normalise(t *testing.T) {
 		want   float64
 	}{
 		{
-			name:   "Positive components (no z)",
+			name:   "Positive components (no Z)",
 			fields: fields{3.0, 4.0, 0.0},
 			want:   1.0,
 		},
 		{
-			name:   "Positive components (no x)",
+			name:   "Positive components (no X)",
 			fields: fields{0.0, 3.0, 4.0},
 			want:   1.0,
 		},
@@ -94,7 +89,7 @@ func TestVector_Normalise(t *testing.T) {
 			want:   1.0,
 		},
 		{
-			name:   "Mixed positive & negative components",
+			name:   "MiXed positive & negative components",
 			fields: fields{3.0, -4.0, 0.0},
 			want:   1.0,
 		},
@@ -102,12 +97,12 @@ func TestVector_Normalise(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			v := &Vector{
-				x: tt.fields.x,
-				y: tt.fields.y,
-				z: tt.fields.z,
+				X: tt.fields.X,
+				Y: tt.fields.Y,
+				Z: tt.fields.Z,
 			}
 			v.Normalise()
-			if got := v.Magnitude(); !(close_enough(got, tt.want)) {
+			if got := v.Magnitude(); !(utils.Close_enough(got, tt.want)) {
 				t.Errorf("After normalisation, Vector.Magnitude() = %v, want %v", got, tt.want)
 			}
 		})
