@@ -16,6 +16,12 @@ import (
 const frame_height float64 = 1.0
 const frame_width float64 = 1.0
 
+var viewer_vector *vectors.Vector = &vectors.Vector{
+	X: 0.0,
+	Y: 0.0,
+	Z: -10.0,
+}
+
 var top_left *vectors.Vector = &vectors.Vector{
 	X: -frame_width / 2.0,
 	Y: frame_height / 2.0,
@@ -77,16 +83,16 @@ func main() {
 	// And a sphere with radius 1 at 0, 0, 10
 	sphere := objects.Sphere{
 		Radius: 1.0,
-		Center: vectors.Vector{X: 0.0, Y: 0.0, Z: 10.0},
+		Center: vectors.Vector{X: 0.0, Y: 0.0, Z: 100.0},
 		Color:  cyan,
 	}
 	sphere2 := objects.Sphere{
 		Radius: 1.0,
-		Center: vectors.Vector{X: 10.0, Y: 0.0, Z: 10.0},
+		Center: vectors.Vector{X: 10.0, Y: 0.0, Z: 100.0},
 		Color:  red,
 	}
 
-	screen_rays := rays.FireRays(screen_vectors, &vectors.Vector{X: 0.0, Y: 0.0, Z: 0.0})
+	screen_rays := rays.FireRays(screen_vectors, viewer_vector)
 
 	scene := scenes.Scene{Objects: []objects.Object{sphere, sphere2}}
 
