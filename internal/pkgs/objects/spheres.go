@@ -37,7 +37,9 @@ func (s Sphere) CollideDistances(test_ray rays.Ray) []float64 {
 }
 
 func (s Sphere) Normal(surface_point *vectors.Vector) *vectors.Vector {
-	return surface_point.Subtract(s.Center).Normalise()
+	normal := surface_point.Subtract(&s.Center)
+	normal.Normalise()
+	return normal
 }
 
 func (s Sphere) Reflect(incoming_ray rays.Ray, point_of_intersection *vectors.Vector) rays.Ray {
