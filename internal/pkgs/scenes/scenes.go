@@ -11,7 +11,7 @@ import (
 type Scene struct {
 	Objects       []objects.Object
 	Lights        []lights.Light
-	AmbientColour color.Color
+	AmbientColour color.RGBA
 }
 
 func (s Scene) Render(ray_matrix [][]rays.Ray) (colour_matrix [][]color.RGBA) {
@@ -20,10 +20,16 @@ func (s Scene) Render(ray_matrix [][]rays.Ray) (colour_matrix [][]color.RGBA) {
 		var colour_row []color.RGBA
 		for _, ray := range ray_row {
 			var colour color.RGBA
-			closest_obj, _ := s.ClosestObject(ray)
+			closest_obj, dist := s.ClosestObject(ray)
 			if closest_obj != nil {
-				//surface_vector := ray.Origin.Add(ray.Direction.MultiplyScalar(dist))
-				colour = closest_obj.GetColor()
+				surface_vector := ray.Origin.Add(ray.Direction.MultiplyScalar(dist))
+				colour = closest_obj.GetMaterial().ComputePhong(
+					s.Lights,
+					s.AmbientColour,
+					surface_vector,
+					closest_obj.Normal(surface_vector),
+					ray.Direction.MultiplyScalar(-1),
+				)
 			}
 			colour_row = append(colour_row, colour)
 		}

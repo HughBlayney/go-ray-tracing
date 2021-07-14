@@ -1,17 +1,17 @@
 package objects
 
 import (
-	"image/color"
 	"math"
 
+	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/materials"
 	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/rays"
 	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/vectors"
 )
 
 type Sphere struct {
-	Radius float64
-	Center vectors.Vector
-	Color  color.RGBA
+	Radius   float64
+	Center   vectors.Vector
+	Material materials.Material
 }
 
 func (s Sphere) CollideDistances(test_ray rays.Ray) []float64 {
@@ -48,6 +48,6 @@ func (s Sphere) Reflect(incoming_ray rays.Ray, point_of_intersection *vectors.Ve
 	return ComputeReflectedRay(incoming_ray, point_of_intersection, s.Normal(point_of_intersection))
 }
 
-func (s Sphere) GetColor() color.RGBA {
-	return s.Color
+func (s Sphere) GetMaterial() materials.Material {
+	return s.Material
 }

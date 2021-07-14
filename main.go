@@ -7,6 +7,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/lights"
+	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/materials"
 	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/objects"
 	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/rays"
 	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/scenes"
@@ -79,22 +81,43 @@ func main() {
 	}
 	// Colors are defined by Red, Green, Blue, Alpha uint8 values.
 	cyan := color.RGBA{100, 200, 200, 0xff}
+	cyanmat := materials.Material{
+		Color:           cyan,
+		Specular_const:  [3]float64{0.5, 0.5, 0.5},
+		Diffuse_const:   [3]float64{0.5, 0.5, 0.5},
+		Ambient_const:   [3]float64{0.5, 0.5, 0.5},
+		Shininess_const: 0.5,
+	}
 	red := color.RGBA{0xff, 0, 0, 0xff}
+	redmat := materials.Material{
+		Color:           red,
+		Specular_const:  [3]float64{0.5, 0.5, 0.5},
+		Diffuse_const:   [3]float64{0.5, 0.5, 0.5},
+		Ambient_const:   [3]float64{0.5, 0.5, 0.5},
+		Shininess_const: 0.5,
+	}
 	// And a sphere with radius 1 at 0, 0, 10
 	sphere := objects.Sphere{
-		Radius: 1.0,
-		Center: vectors.Vector{X: 0.0, Y: 0.0, Z: 100.0},
-		Color:  cyan,
+		Radius:   1.0,
+		Center:   vectors.Vector{X: 0.0, Y: 0.0, Z: 100.0},
+		Material: cyanmat,
 	}
 	sphere2 := objects.Sphere{
-		Radius: 1.0,
-		Center: vectors.Vector{X: 10.0, Y: 0.0, Z: 100.0},
-		Color:  red,
+		Radius:   1.0,
+		Center:   vectors.Vector{X: 10.0, Y: 0.0, Z: 100.0},
+		Material: redmat,
 	}
 
 	screen_rays := rays.FireRays(screen_vectors, viewer_vector)
 
-	scene := scenes.Scene{Objects: []objects.Object{sphere, sphere2}}
+	scene := scenes.Scene{
+		Objects: []objects.Object{sphere, sphere2},
+		Lights: []lights.Light{{
+			Color:     color.RGBA{0xff, 0xff, 0xff, 0xff},
+			Intensity: 1.0,
+			Position:  vectors.Vector{0.0, 0.0, 0.0},
+		}},
+	}
 
 	colour_matrix := scene.Render(screen_rays)
 
