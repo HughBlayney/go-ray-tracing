@@ -1,0 +1,3 @@
+In materials.go, when computed the reflected light ray R, I was taking the
+reflection of the vector from the surface _to_ the light source, not from the
+light source to the surface.
