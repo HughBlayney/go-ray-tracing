@@ -83,7 +83,7 @@ func main() {
 	cyan := color.RGBA{100, 200, 200, 0xff}
 	cyanmat := materials.MakeMaterial(
 		cyan,
-		10,
+		0.5,
 		0,
 		0,
 		0.005,
@@ -92,8 +92,8 @@ func main() {
 	redmat := materials.MakeMaterial(
 		red,
 		0.5,
-		0.5,
-		0.5,
+		0,
+		0,
 		0.005,
 	)
 	// And a sphere with radius 1 at 0, 0, 10
