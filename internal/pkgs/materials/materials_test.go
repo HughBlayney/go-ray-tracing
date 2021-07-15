@@ -126,6 +126,24 @@ func TestMaterial_ComputePhong(t *testing.T) {
 			},
 			wantIllumination: color.RGBA{0xff, 0xff, 0xff, 0xff},
 		},
+		{
+			name: "Eclipse of light",
+			fields: fields{
+				Color:           color.RGBA{0xff, 0xff, 0xff, 0xff},
+				Specular_const:  0.5,
+				Diffuse_const:   0,
+				Ambient_const:   0,
+				Shininess_const: 0.005,
+			},
+			args: args{
+				lights:           []lights.Light{{Color: color.RGBA{0xff, 0xff, 0xff, 0xff}, Intensity: 1.0, Position: vectors.Vector{1.0, -1.0, 0.0}}},
+				ambient_color:    color.RGBA{0.0, 0.0, 0.0, 0.0},
+				surface_position: &vectors.Vector{0.0, 0.0, 0.0},
+				surface_normal:   &vectors.Vector{-1.0, -1.0, 0.0},
+				viewer_direction: &vectors.Vector{0.0, 1.0, 0.0},
+			},
+			wantIllumination: color.RGBA{0, 0, 0, 0xff},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
