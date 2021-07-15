@@ -25,8 +25,19 @@ func computeDiffuseSpecular(
 	var diffuse [3]float64
 	var specular [3]float64
 	for i := range diffuse {
-		diffuse[i] = Diffuse_const[i] * L.Dot(surface_normal)
-		specular[i] = Specular_const[i] * math.Pow(R.Dot(viewer_direction), alpha)
+		diffuse_dot := L.Dot(surface_normal)
+		specular_dot := math.Pow(R.Dot(viewer_direction), alpha)
+		if specular_dot > 0.0 {
+			specular[i] = Specular_const[i] * specular_dot
+		} else {
+			specular[i] = 0.0
+		}
+		if diffuse_dot > 0.0 {
+			diffuse[i] = Diffuse_const[i] * diffuse_dot
+		} else {
+			diffuse[i] = 0.0
+			specular[i] = 0.0
+		}
 	}
 
 	return diffuse, specular
