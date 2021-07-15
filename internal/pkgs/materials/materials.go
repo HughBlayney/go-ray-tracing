@@ -19,7 +19,7 @@ func computeDiffuseSpecular(
 ) ([3]float64, [3]float64) {
 	L := (light_position).Subtract(surface_position)
 	L.Normalise()
-	R := L.Reflect(surface_normal)
+	R := L.MultiplyScalar(-1).Reflect(surface_normal)
 	R.Normalise()
 
 	var diffuse [3]float64
