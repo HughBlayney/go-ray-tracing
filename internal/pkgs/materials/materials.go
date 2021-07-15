@@ -43,12 +43,32 @@ func clipFloat(float_val float64) uint8 {
 	return converted_float_val
 }
 
+func MakeMaterial(colour color.RGBA, diffuse float64, specular float64, ambient float64, shininess float64) Material {
+	diffuse_consts := [3]float64{float64(colour.R) * diffuse, float64(colour.G) * diffuse, float64(colour.B) * diffuse}
+	specular_consts := [3]float64{float64(colour.R) * specular, float64(colour.G) * specular, float64(colour.B) * specular}
+	ambient_consts := [3]float64{float64(colour.R) * diffuse, float64(colour.G) * diffuse, float64(colour.B) * diffuse}
+
+	return Material{
+		Color:           colour,
+		Diffuse_const:   diffuse,
+		Ambient_const:   ambient,
+		Shininess_const: shininess,
+		diffuse_consts:  diffuse_consts,
+		specular_consts: specular_consts,
+		ambient_consts:  ambient_consts,
+	}
+}
+
 type Material struct {
 	Color           color.RGBA
-	Specular_const  [3]float64
-	Diffuse_const   [3]float64
-	Ambient_const   [3]float64
+	Specular_const  float64
+	Diffuse_const   float64
+	Ambient_const   float64
 	Shininess_const float64
+
+	diffuse_consts  [3]float64
+	specular_consts [3]float64
+	ambient_consts  [3]float64
 
 	ambient_color color.RGBA // Only needs to be computed once per scene
 }
@@ -60,15 +80,15 @@ func (m Material) ComputePhong(
 
 	if m.ambient_color.A == 0 {
 		m.ambient_color.A = 0xff
-		m.ambient_color.R = clipFloat(float64(ambient_color.R) * m.Ambient_const[0])
-		m.ambient_color.G = clipFloat(float64(ambient_color.B) * m.Ambient_const[1])
-		m.ambient_color.B = clipFloat(float64(ambient_color.B) * m.Ambient_const[2])
+		m.ambient_color.R = clipFloat(float64(ambient_color.R) * m.ambient_consts[0])
+		m.ambient_color.G = clipFloat(float64(ambient_color.B) * m.ambient_consts[1])
+		m.ambient_color.B = clipFloat(float64(ambient_color.B) * m.ambient_consts[2])
 	}
 	var light_totals [3]float64
 	for _, light := range lights {
 		diffuse, specular := computeDiffuseSpecular(
-			m.Diffuse_const,
-			m.Specular_const,
+			m.diffuse_consts,
+			m.specular_consts,
 			m.Shininess_const,
 			&light.Position,
 			surface_position,

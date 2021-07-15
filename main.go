@@ -81,21 +81,21 @@ func main() {
 	}
 	// Colors are defined by Red, Green, Blue, Alpha uint8 values.
 	cyan := color.RGBA{100, 200, 200, 0xff}
-	cyanmat := materials.Material{
-		Color:           cyan,
-		Specular_const:  [3]float64{0.5, 0.5, 0.5},
-		Diffuse_const:   [3]float64{0.5, 0.5, 0.5},
-		Ambient_const:   [3]float64{0.5, 0.5, 0.5},
-		Shininess_const: 0.5,
-	}
+	cyanmat := materials.MakeMaterial(
+		cyan,
+		10,
+		0,
+		0,
+		0.005,
+	)
 	red := color.RGBA{0xff, 0, 0, 0xff}
-	redmat := materials.Material{
-		Color:           red,
-		Specular_const:  [3]float64{0.5, 0.5, 0.5},
-		Diffuse_const:   [3]float64{0.5, 0.5, 0.5},
-		Ambient_const:   [3]float64{0.5, 0.5, 0.5},
-		Shininess_const: 0.5,
-	}
+	redmat := materials.MakeMaterial(
+		red,
+		0.5,
+		0.5,
+		0.5,
+		0.005,
+	)
 	// And a sphere with radius 1 at 0, 0, 10
 	sphere := objects.Sphere{
 		Radius:   1.0,
@@ -115,7 +115,7 @@ func main() {
 		Lights: []lights.Light{{
 			Color:     color.RGBA{0xff, 0xff, 0xff, 0xff},
 			Intensity: 1.0,
-			Position:  vectors.Vector{0.0, 0.0, 0.0},
+			Position:  vectors.Vector{10.0, 0.0, 0.0},
 		}},
 	}
 
