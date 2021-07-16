@@ -83,18 +83,18 @@ func main() {
 	cyan := color.RGBA{100, 200, 200, 0xff}
 	cyanmat := materials.MakeMaterial(
 		cyan,
-		0.5,
-		0,
-		0,
 		0.005,
+		0.0005,
+		0.002,
+		50,
 	)
 	red := color.RGBA{0xff, 0, 0, 0xff}
 	redmat := materials.MakeMaterial(
 		red,
-		0.5,
-		0,
-		0,
-		0.005,
+		0.003,
+		0.000005,
+		0.002,
+		5,
 	)
 	// And a sphere with radius 1 at 0, 0, 10
 	sphere := objects.Sphere{
@@ -115,8 +115,9 @@ func main() {
 		Lights: []lights.Light{{
 			Color:     color.RGBA{0xff, 0xff, 0xff, 0xff},
 			Intensity: 1.0,
-			Position:  vectors.Vector{10.0, 0.0, 0.0},
+			Position:  vectors.Vector{100.0, 0.0, 0.0},
 		}},
+		AmbientColour: color.RGBA{100, 100, 100, 0xff},
 	}
 
 	colour_matrix := scene.Render(screen_rays)
