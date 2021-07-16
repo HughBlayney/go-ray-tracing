@@ -57,7 +57,7 @@ func clipFloat(float_val float64) uint8 {
 func MakeMaterial(colour color.RGBA, diffuse float64, specular float64, ambient float64, shininess float64) Material {
 	diffuse_consts := [3]float64{float64(colour.R) * diffuse, float64(colour.G) * diffuse, float64(colour.B) * diffuse}
 	specular_consts := [3]float64{float64(colour.R) * specular, float64(colour.G) * specular, float64(colour.B) * specular}
-	ambient_consts := [3]float64{float64(colour.R) * diffuse, float64(colour.G) * diffuse, float64(colour.B) * diffuse}
+	ambient_consts := [3]float64{float64(colour.R) * ambient, float64(colour.G) * ambient, float64(colour.B) * ambient}
 
 	return Material{
 		Color:           colour,
@@ -111,13 +111,13 @@ func (m Material) ComputePhong(
 		light_totals[2] += float64(light.Color.B) * (diffuse[2] + specular[2])
 	}
 	illumination.R = clipFloat(
-		float64(m.ambient_color.R) + light_totals[0],
+		float64(m.ambient_color.R)*m.ambient_consts[0] + light_totals[0],
 	)
 	illumination.G = clipFloat(
-		float64(m.ambient_color.G) + light_totals[1],
+		float64(m.ambient_color.G)*m.ambient_consts[1] + light_totals[1],
 	)
 	illumination.B = clipFloat(
-		float64(m.ambient_color.B) + light_totals[2],
+		float64(m.ambient_color.B)*m.ambient_consts[2] + light_totals[2],
 	)
 
 	return
