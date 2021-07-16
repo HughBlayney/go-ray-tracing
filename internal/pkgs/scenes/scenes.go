@@ -49,6 +49,7 @@ func (s Scene) ClosestObject(ray rays.Ray) (objects.Object, float64) {
 				if !found_obj || d < closest_dist {
 					closest_dist = d
 					closest_obj = obj
+					found_obj = true
 				}
 			}
 		}
