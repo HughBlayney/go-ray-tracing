@@ -1,0 +1,2 @@
+I believe this was a combination of several different bugs - if you're interested, check the commits immediately after this image was committed.
+If you still have any questions, feel free to get in touch!
