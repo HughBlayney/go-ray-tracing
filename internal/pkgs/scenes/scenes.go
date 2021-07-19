@@ -109,10 +109,10 @@ func computeDiffuseSpecular(
 		R := L.MultiplyScalar(-1).Reflect(surface_normal)
 		R.Normalise()
 		diffuse_dot := L.Dot(surface_normal)
-		specular_dot := math.Pow(R.Dot(viewer_direction), alpha)
+		specular_dot := R.Dot(viewer_direction)
 		for i := range diffuse {
 			if specular_dot > 0.0 {
-				specular[i] = Specular_const[i] * specular_dot
+				specular[i] = Specular_const[i] * math.Pow(specular_dot, alpha)
 			} else {
 				specular[i] = 0.0
 			}
