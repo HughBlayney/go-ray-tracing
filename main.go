@@ -84,9 +84,9 @@ func main() {
 	cyanmat := materials.MakeMaterial(
 		cyan,
 		0.005,
-		0.0005,
+		0.05,
 		0.002,
-		50,
+		1000,
 	)
 	red := color.RGBA{0xff, 0, 0, 0xff}
 	redmat := materials.MakeMaterial(
@@ -96,26 +96,62 @@ func main() {
 		0.002,
 		5,
 	)
+	grey := color.RGBA{200, 200, 200, 0xff}
+	greymat := materials.MakeMaterial(
+		grey,
+		0.01,
+		0.001,
+		0.002,
+		5000,
+	)
+	green := color.RGBA{0, 0xff, 0, 0xff}
+	greenmat := materials.MakeMaterial(
+		green,
+		0.001,
+		0.001,
+		0.002,
+		5000,
+	)
 	// And a sphere with radius 1 at 0, 0, 10
 	sphere := objects.Sphere{
-		Radius:   1.0,
-		Center:   vectors.Vector{X: 0.0, Y: 0.0, Z: 100.0},
+		Radius:   5.0,
+		Center:   vectors.Vector{X: -10.0, Y: -5.0, Z: 125.0},
 		Material: cyanmat,
 	}
 	sphere2 := objects.Sphere{
-		Radius:   1.0,
-		Center:   vectors.Vector{X: 10.0, Y: 0.0, Z: 100.0},
+		Radius:   5.0,
+		Center:   vectors.Vector{X: 10.0, Y: -5.0, Z: 125.0},
 		Material: redmat,
+	}
+	plane1 := objects.Plane{
+		PlaneNormal: vectors.Vector{X: 0.0, Y: 1.0, Z: 0.0},
+		Point:       vectors.Vector{X: 0.0, Y: -10.0, Z: 0.0},
+		Material:    greymat,
+	}
+	plane2 := objects.Plane{
+		PlaneNormal: vectors.Vector{X: -1.0, Y: 0.0, Z: 0.0},
+		Point:       vectors.Vector{X: 25.0, Y: -1.0, Z: 0.0},
+		Material:    greymat,
+	}
+	plane3 := objects.Plane{
+		PlaneNormal: vectors.Vector{X: 1.0, Y: 0.0, Z: 0.0},
+		Point:       vectors.Vector{X: -25.0, Y: -1.0, Z: 0.0},
+		Material:    greymat,
+	}
+	plane4 := objects.Plane{
+		PlaneNormal: vectors.Vector{X: 0.0, Y: 0.0, Z: -1.0},
+		Point:       vectors.Vector{X: 0.0, Y: -1.0, Z: 200.0},
+		Material:    greenmat,
 	}
 
 	screen_rays := rays.FireRays(screen_vectors, viewer_vector)
 
 	scene := scenes.Scene{
-		Objects: []objects.Object{sphere, sphere2},
+		Objects: []objects.Object{sphere, sphere2, plane1, plane2, plane3, plane4},
 		Lights: []lights.Light{{
 			Color:     color.RGBA{0xff, 0xff, 0xff, 0xff},
 			Intensity: 1.0,
-			Position:  vectors.Vector{100.0, 0.0, 0.0},
+			Position:  vectors.Vector{15.0, 30.0, 30.0},
 		}},
 		AmbientColour: color.RGBA{100, 100, 100, 0xff},
 	}
