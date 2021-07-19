@@ -20,7 +20,9 @@ func (p Plane) CollideDistances(test_ray rays.Ray) []float64 {
 	if denominator != 0 {
 		numerator := (&p.Point).Subtract(test_ray.Origin).Dot(&p.PlaneNormal)
 		d := numerator / denominator
-		distances = append(distances, d)
+		if d > 0 {
+			distances = append(distances, d)
+		}
 	}
 
 	return distances

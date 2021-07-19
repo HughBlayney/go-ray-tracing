@@ -29,10 +29,19 @@ func (s Sphere) CollideDistances(test_ray rays.Ray) []float64 {
 
 	if delta > 0.0 {
 		// This guarantees in ascending order
-		distances = append(distances, (-b-math.Sqrt(delta))/(2*a))
-		distances = append(distances, (-b+math.Sqrt(delta))/(2*a))
+		d := (-b - math.Sqrt(delta)) / (2 * a)
+		if d > 0 {
+			distances = append(distances, d)
+		}
+		d = (-b + math.Sqrt(delta)) / (2 * a)
+		if d > 0 {
+			distances = append(distances, d)
+		}
 	} else if delta == 0.0 {
-		distances = append(distances, (-b)/(2*a))
+		d := (-b) / (2 * a)
+		if d > 0 {
+			distances = append(distances, d)
+		}
 	}
 
 	return distances
