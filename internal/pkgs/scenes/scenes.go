@@ -17,6 +17,18 @@ type Scene struct {
 	AmbientColour color.RGBA
 }
 
+func (s Scene) ObjectsOtherThan(avoid_obj objects.Object) []objects.Object {
+	// Return all objects in a scene other than the specified object.
+	var return_objects []objects.Object
+	for _, obj := range s.Objects {
+		if obj != avoid_obj {
+			return_objects = append(return_objects, obj)
+		}
+	}
+
+	return return_objects
+}
+
 func (s Scene) Render(ray_matrix [][]rays.Ray) (colour_matrix [][]color.RGBA) {
 	// Given a matrix of rays, return a matrix of colour values.
 	for _, ray_row := range ray_matrix {
@@ -30,7 +42,7 @@ func (s Scene) Render(ray_matrix [][]rays.Ray) (colour_matrix [][]color.RGBA) {
 				colour = ComputePhong(
 					mat,
 					s.Lights,
-					s.Objects,
+					s.ObjectsOtherThan(closest_obj),
 					s.AmbientColour,
 					surface_vector,
 					closest_obj.Normal(surface_vector),
