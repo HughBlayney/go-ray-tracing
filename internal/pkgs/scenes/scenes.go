@@ -11,6 +11,9 @@ import (
 	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/vectors"
 )
 
+// Threshold min dist to avoid objects casting shadows on themselves
+var dist_threshold float64 = 1e-6
+
 type Scene struct {
 	Objects       []objects.Object
 	Lights        []lights.Light
@@ -42,7 +45,7 @@ func (s Scene) Render(ray_matrix [][]rays.Ray) (colour_matrix [][]color.RGBA) {
 				colour = ComputePhong(
 					mat,
 					s.Lights,
-					s.ObjectsOtherThan(closest_obj),
+					s.Objects,
 					s.AmbientColour,
 					surface_vector,
 					closest_obj.Normal(surface_vector),
@@ -96,7 +99,7 @@ func computeDiffuseSpecular(
 	for _, obj := range objects {
 		obj_dists := obj.CollideDistances(L_ray)
 		for _, obj_dist := range obj_dists {
-			if obj_dist < light_dist {
+			if obj_dist < light_dist && obj_dist > dist_threshold {
 				in_shadow = true
 				break
 			}
