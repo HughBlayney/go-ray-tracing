@@ -87,6 +87,7 @@ func main() {
 		0.05,
 		0.002,
 		1000,
+		1.0,
 	)
 	red := color.RGBA{0xff, 0, 0, 0xff}
 	redmat := materials.MakeMaterial(
@@ -95,6 +96,7 @@ func main() {
 		0.000005,
 		0.002,
 		5,
+		1.0,
 	)
 	grey := color.RGBA{200, 200, 200, 0xff}
 	greymat := materials.MakeMaterial(
@@ -103,6 +105,7 @@ func main() {
 		0.001,
 		0.002,
 		5000,
+		1.0,
 	)
 	green := color.RGBA{0, 0xff, 0, 0xff}
 	greenmat := materials.MakeMaterial(
@@ -111,6 +114,7 @@ func main() {
 		0.001,
 		0.002,
 		5000,
+		1.0,
 	)
 	// And a sphere with radius 1 at 0, 0, 10
 	sphere := objects.Sphere{
