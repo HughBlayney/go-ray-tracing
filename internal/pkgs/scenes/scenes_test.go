@@ -1,4 +1,4 @@
-package materials
+package scenes
 
 import (
 	"image/color"
@@ -6,6 +6,8 @@ import (
 	"testing"
 
 	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/lights"
+	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/materials"
+	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/objects"
 	"github.com/HughBlayney/go-ray-tracing/internal/pkgs/vectors"
 )
 
@@ -42,7 +44,8 @@ func Test_computeDiffuseSpecular(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got1 := computeDiffuseSpecular(tt.args.Diffuse_const, tt.args.Specular_const, tt.args.alpha, tt.args.light_position, tt.args.surface_position, tt.args.surface_normal, tt.args.viewer_direction)
+			var objs []objects.Object
+			got, got1 := computeDiffuseSpecular(tt.args.Diffuse_const, tt.args.Specular_const, tt.args.alpha, tt.args.light_position, tt.args.surface_position, tt.args.surface_normal, tt.args.viewer_direction, objs)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("computeDiffuseSpecular() got = %v, want %v", got, tt.want)
 			}
@@ -87,13 +90,14 @@ func Test_clipFloat(t *testing.T) {
 	}
 }
 
-func TestMaterial_ComputePhong(t *testing.T) {
+func Test_ComputePhong(t *testing.T) {
 	type fields struct {
 		Color           color.RGBA
 		Specular_const  float64
 		Diffuse_const   float64
 		Ambient_const   float64
 		Shininess_const float64
+		Matte_const     float64
 	}
 	type args struct {
 		lights           []lights.Light
@@ -116,6 +120,7 @@ func TestMaterial_ComputePhong(t *testing.T) {
 				Diffuse_const:   0.5,
 				Ambient_const:   0.5,
 				Shininess_const: 0.005,
+				Matte_const:     0.5,
 			},
 			args: args{
 				lights:           []lights.Light{{Color: color.RGBA{0xff, 0xff, 0xff, 0xff}, Intensity: 1.0, Position: vectors.Vector{0.0, 1.0, 0.0}}},
@@ -134,6 +139,7 @@ func TestMaterial_ComputePhong(t *testing.T) {
 				Diffuse_const:   0,
 				Ambient_const:   0,
 				Shininess_const: 0.005,
+				Matte_const:     0.5,
 			},
 			args: args{
 				lights:           []lights.Light{{Color: color.RGBA{0xff, 0xff, 0xff, 0xff}, Intensity: 1.0, Position: vectors.Vector{1.0, -1.0, 0.0}}},
@@ -152,6 +158,7 @@ func TestMaterial_ComputePhong(t *testing.T) {
 				Diffuse_const:   0,
 				Ambient_const:   0,
 				Shininess_const: 0.005,
+				Matte_const:     0.5,
 			},
 			args: args{
 				lights:           []lights.Light{{Color: color.RGBA{0xff, 0xff, 0xff, 0xff}, Intensity: 1.0, Position: vectors.Vector{0.0, -1.0, 0.0}}},
@@ -165,14 +172,16 @@ func TestMaterial_ComputePhong(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			m := MakeMaterial(
+			var objs []objects.Object
+			m := materials.MakeMaterial(
 				tt.fields.Color,
 				tt.fields.Diffuse_const,
 				tt.fields.Specular_const,
 				tt.fields.Ambient_const,
 				tt.fields.Shininess_const,
+				tt.fields.Matte_const,
 			)
-			if gotIllumination := m.ComputePhong(tt.args.lights, tt.args.Ambient_color, tt.args.surface_position, tt.args.surface_normal, tt.args.viewer_direction); !reflect.DeepEqual(gotIllumination, tt.wantIllumination) {
+			if gotIllumination := ComputePhong(m, tt.args.lights, objs, tt.args.Ambient_color, tt.args.surface_position, tt.args.surface_normal, tt.args.viewer_direction); !reflect.DeepEqual(gotIllumination, tt.wantIllumination) {
 				t.Errorf("Material.ComputePhong() = %v, want %v", gotIllumination, tt.wantIllumination)
 			}
 		})
